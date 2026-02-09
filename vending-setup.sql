@@ -1,67 +1,61 @@
-CREATE DATABASE  IF NOT EXISTS `vending`
-USE `vending`;
+CREATE DATABASE IF NOT EXISTS vending;
+USE vending;
 
-DROP TABLE IF EXISTS `Location`;
-CREATE TABLE `Location` (
-  `location_id` smallint unsigned NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `address_2` varchar(50) DEFAULT NULL,
-  `zip` varchar(15) NOT NULL,
-  `state` char(2) NOT NULL,
-  PRIMARY KEY (`location_id`),
-  UNIQUE KEY `location_id_UNIQUE` (`location_id`)
+DROP TABLE IF EXISTS Nutrition;
+DROP TABLE IF EXISTS VendingMachineSnack;
+DROP TABLE IF EXISTS VendingMachine;
+DROP TABLE IF EXISTS Snack;
+DROP TABLE IF EXISTS Location;
+
+CREATE TABLE location (
+    location_id SMALLINT UNSIGNED PRIMARY KEY,
+    address VARCHAR(255) NOT NULL,
+    address_2 VARCHAR(50),
+    zip VARCHAR(15) NOT NULL,
+    state CHAR(2) NOT NULL
 );
 
-DROP TABLE IF EXISTS `Snack`;
-CREATE TABLE `Snack` (
-  `snack_id` smallint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
-  PRIMARY KEY (`snack_id`),
-  UNIQUE KEY `snack_id_UNIQUE` (`snack_id`)
+CREATE TABLE snack (
+    snack_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(45) NOT NULL
 );
 
-DROP TABLE IF EXISTS `VendingMachine`;
-CREATE TABLE `VendingMachine` (
-  `machine_id` smallint unsigned NOT NULL AUTO_INCREMENT,
-  `location_id` smallint unsigned DEFAULT NULL,
-  PRIMARY KEY (`machine_id`),
-  UNIQUE KEY `machine_id_UNIQUE` (`machine_id`),
-  KEY `location_id_idx` (`location_id`),
-  CONSTRAINT `location_id` FOREIGN KEY (`location_id`) REFERENCES `Location` (`location_id`) ON DELETE RESTRICT ON UPDATE CASCADE
+CREATE TABLE vending_machine (
+    machine_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    location_id SMALLINT UNSIGNED,
+    FOREIGN KEY (location_id) REFERENCES location (location_id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS `VendingMachineSnack`;
-CREATE TABLE `VendingMachineSnack` (
-  `snack_id` smallint unsigned NOT NULL,
-  `machine_id` smallint unsigned NOT NULL,
-  `slot_code` varchar(3) NOT NULL,
-  `quantity` tinyint unsigned DEFAULT '0',
-  `price` decimal(10,2) unsigned DEFAULT '0.00',
-  PRIMARY KEY (`machine_id`,`slot_code`),
-  UNIQUE KEY `machine_id_UNIQUE` (`machine_id`),
-  KEY `snack_id_idx` (`snack_id`),
-  CONSTRAINT `machine_id` FOREIGN KEY (`machine_id`) REFERENCES `VendingMachine` (`machine_id`),
-  CONSTRAINT `vending_machine_snack` FOREIGN KEY (`snack_id`) REFERENCES `Snack` (`snack_id`)
+CREATE TABLE vending_machine_snack (
+    snack_id SMALLINT UNSIGNED NOT NULL,
+    machine_id SMALLINT UNSIGNED NOT NULL,
+    slot_code VARCHAR(3) NOT NULL,
+    quantity TINYINT UNSIGNED DEFAULT 0,
+    price DECIMAL(10,2) UNSIGNED DEFAULT 0.00,
+    PRIMARY KEY (machine_id, slot_code),
+    FOREIGN KEY (machine_id) REFERENCES vending_machine (machine_id),
+    FOREIGN KEY (snack_id) REFERENCES snack (snack_id)
 );
 
-DROP TABLE IF EXISTS `Nutrition`;
-CREATE TABLE `Nutrition` (
-  `snack_id` smallint unsigned NOT NULL,
-  `serving_size` varchar(45) NOT NULL,
-  `serving_per` smallint NOT NULL,
-  `calories` smallint NOT NULL,
-  `total_fat` smallint NOT NULL,
-  `saturated_fat` smallint DEFAULT NULL,
-  `trans_fat` smallint DEFAULT NULL,
-  `cholesterol` smallint NOT NULL,
-  `sodium` smallint NOT NULL,
-  `total_carbohydrate` smallint NOT NULL,
-  `fiber` smallint DEFAULT NULL,
-  `total_sugars` smallint DEFAULT NULL,
-  `added_sugars` smallint DEFAULT NULL,
-  `protein` smallint NOT NULL,
-  `additional_info` varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`snack_id`),
-  UNIQUE KEY `snack_id_UNIQUE` (`snack_id`),
-  CONSTRAINT `snack_nutrition` FOREIGN KEY (`snack_id`) REFERENCES `Snack` (`snack_id`) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE nutrition (
+    snack_id SMALLINT UNSIGNED PRIMARY KEY,
+    serving_size VARCHAR(45) NOT NULL,
+    serving_per SMALLINT NOT NULL,
+    calories SMALLINT NOT NULL,
+    total_fat SMALLINT NOT NULL,
+    saturated_fat SMALLINT,
+    trans_fat SMALLINT,
+    cholesterol SMALLINT NOT NULL,
+    sodium SMALLINT NOT NULL,
+    total_carbohydrate SMALLINT NOT NULL,
+    fiber SMALLINT,
+    total_sugars SMALLINT,
+    added_sugars SMALLINT,
+    protein SMALLINT NOT NULL,
+    additional_info VARCHAR(300),
+    FOREIGN KEY (snack_id) REFERENCES snack (snack_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
