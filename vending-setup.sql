@@ -1,11 +1,11 @@
 CREATE DATABASE IF NOT EXISTS vending;
 USE vending;
 
-DROP TABLE IF EXISTS Nutrition;
-DROP TABLE IF EXISTS VendingMachineSnack;
-DROP TABLE IF EXISTS VendingMachine;
-DROP TABLE IF EXISTS Snack;
-DROP TABLE IF EXISTS Location;
+DROP TABLE IF EXISTS nutrition;
+DROP TABLE IF EXISTS vending_machine_snack;
+DROP TABLE IF EXISTS vending_machine;
+DROP TABLE IF EXISTS snack;
+DROP TABLE IF EXISTS location;
 
 CREATE TABLE location (
     location_id SMALLINT UNSIGNED PRIMARY KEY,
