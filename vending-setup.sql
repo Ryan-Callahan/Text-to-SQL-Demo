@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS vending;
-USE vending;
-
 DROP TABLE IF EXISTS nutrition;
 DROP TABLE IF EXISTS vending_machine_snack;
 DROP TABLE IF EXISTS vending_machine;
@@ -16,12 +13,12 @@ CREATE TABLE location (
 );
 
 CREATE TABLE snack (
-    snack_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    snack_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(45) NOT NULL
 );
 
 CREATE TABLE vending_machine (
-    machine_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    machine_id INTEGER PRIMARY KEY AUTOINCREMENT,
     location_id SMALLINT UNSIGNED,
     FOREIGN KEY (location_id) REFERENCES location (location_id)
         ON DELETE RESTRICT
@@ -33,7 +30,7 @@ CREATE TABLE vending_machine_snack (
     machine_id SMALLINT UNSIGNED NOT NULL,
     slot_code VARCHAR(3) NOT NULL,
     quantity TINYINT UNSIGNED DEFAULT 0,
-    price DECIMAL(10,2) UNSIGNED DEFAULT 0.00,
+    price DECIMAL(10,2) DEFAULT 0.00,
     PRIMARY KEY (machine_id, slot_code),
     FOREIGN KEY (machine_id) REFERENCES vending_machine (machine_id),
     FOREIGN KEY (snack_id) REFERENCES snack (snack_id)

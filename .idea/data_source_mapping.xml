@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourcePerFileMappings">
-    <file url="file://$PROJECT_DIR$/vending-data-setup.sql" value="1a20af55-198f-44e0-a78e-a0a9497bd35a" />
-    <file url="file://$PROJECT_DIR$/vending-setup.sql" value="1a20af55-198f-44e0-a78e-a0a9497bd35a" />
+    <file url="file://$PROJECT_DIR$/vending-data-setup.sql" value="e6986390-2121-4dce-8b94-54e307e50311" />
+    <file url="file://$PROJECT_DIR$/vending-setup.sql" value="e6986390-2121-4dce-8b94-54e307e50311" />
   </component>
 </project>
