@@ -1,0 +1,28 @@
+NEW DATABASE EXAMPLE
+
+CREATE TABLE student (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(255),
+    grade INTEGER
+);
+
+CREATE TABLE friend (
+    student_id INTEGER NOT NULL,
+    friend_id INTEGER NOT NULL,
+    PRIMARY KEY (student_id, friend_id),
+    FOREIGN KEY (student_id) REFERENCES student (id),
+    FOREIGN KEY (friend_id) REFERENCES student (id)
+);
+
+Who are 4th grader Timmy Thomas's friends?
+SELECT
+    s.id,
+    s.name,
+    s.grade
+FROM student s
+JOIN friend f ON f.friend_id = s.id
+WHERE f.student_id IN (
+    SELECT id
+    FROM student
+    WHERE name = 'Timmy Thomas' AND grade = 4
+);

@@ -1,0 +1,23 @@
+NEW DATABASE EXAMPLE
+
+CREATE TABLE frog (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(255),
+    color VARCHAR(50),
+    species VARCHAR(50)
+);
+
+CREATE TABLE tank (
+    id INTEGER NOT NULL,
+    frog_id INTEGER NOT NULL,
+    PRIMARY KEY (id, frog_id),
+    FOREIGN KEY (frog_id) REFERENCES frog (id)
+);
+
+How many spotted toads are in tank 2?
+
+SELECT
+    COUNT(*)
+FROM frog f
+JOIN tank t ON t.frog_id = f.id
+WHERE t.id = 2 AND f.species LIKE '%spotted toad%';

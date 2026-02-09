@@ -1,0 +1,54 @@
+NEW DATABASE EXAMPLE
+
+CREATE TABLE movie (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    release_year INTEGER NOT NULL,
+    rating REAL
+);
+
+CREATE TABLE ticket_sale (
+    id INTEGER PRIMARY KEY,
+    movie_id INTEGER NOT NULL,
+    sold_at TEXT NOT NULL,
+    price NUMERIC NOT NULL,
+    FOREIGN KEY (movie_id) REFERENCES movie (id)
+);
+
+Which movie has made the most total revenue from ticket sales?
+
+SELECT
+    m.title,
+    COALESCE(SUM(ts.price), 0) AS total_revenue
+FROM movie m
+JOIN ticket_sale ts ON ts.movie_id = m.id
+GROUP BY m.id, m.title
+ORDER BY total_revenue DESC
+LIMIT 1;
+
+
+NEW DATABASE EXAMPLE
+
+CREATE TABLE employee (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    department TEXT NOT NULL
+);
+
+CREATE TABLE shift (
+    id INTEGER PRIMARY KEY,
+    employee_id INTEGER NOT NULL,
+    shift_date TEXT NOT NULL,
+    hours INTEGER NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employee (id)
+);
+
+How many total hours has each employee worked?
+
+SELECT
+    e.name,
+    COALESCE(SUM(s.hours), 0) AS total_hours
+FROM employee e
+LEFT JOIN shift s ON s.employee_id = e.id
+GROUP BY e.id, e.name
+ORDER BY total_hours DESC, e.name ASC;

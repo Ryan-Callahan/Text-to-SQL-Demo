@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:mysql://localhost:3306/vending</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="db-ai" uuid="e6986390-2121-4dce-8b94-54e307e50311">
+    <data-source source="LOCAL" name="db-ai-vending.sqlite" uuid="b1881d93-92b7-4821-87c7-8b97f723a6fd">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/db-ai.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:db-ai-vending.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

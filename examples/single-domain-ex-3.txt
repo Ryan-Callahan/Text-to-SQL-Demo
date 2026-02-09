@@ -1,0 +1,18 @@
+Is there a vending machine on center street?
+SELECT
+    l.address,
+    l.address_2,
+    l.zip,
+    l.state,
+    v.machine_id
+FROM vending_machine v
+JOIN location l ON l.location_id = v.location_id
+WHERE l.address LIKE '%center st%'
+ORDER BY v.machine_id;
+
+How many muffins are left in all the vending machines?
+SELECT
+    COALESCE(SUM(vms.quantity), 0) AS muffins
+FROM vending_machine_snack vms
+JOIN snack s ON vms.snack_id = s.snack_id
+WHERE s.name LIKE '%muffin%';

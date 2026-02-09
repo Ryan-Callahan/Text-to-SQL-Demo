@@ -1,0 +1,18 @@
+Help me figure out where to get a good snack that is low-carb and high-protein. I want the most expensive of those things.
+SELECT
+    s.name,
+    n.total_carbohydrate,
+    n.protein,
+    l.address,
+    l.address_2,
+    l.zip,
+    l.state,
+    v.machine_id,
+    vms.slot_code
+FROM nutrition n
+JOIN snack s ON s.snack_id = n.snack_id
+JOIN vending_machine_snack vms ON vms.snack_id = s.snack_id
+JOIN vending_machine v ON v.machine_id = vms.machine_id
+JOIN location l ON l.location_id = v.location_id
+ORDER BY n.total_carbohydrate ASC, n.protein DESC
+LIMIT 1;

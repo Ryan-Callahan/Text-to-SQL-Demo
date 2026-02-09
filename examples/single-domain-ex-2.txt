@@ -1,0 +1,15 @@
+Where can I find something with peanut butter?
+SELECT
+    s.name,
+    l.address,
+    l.address_2,
+    l.zip,
+    l.state,
+    v.machine_id,
+    vms.slot_code
+FROM snack s
+JOIN vending_machine_snack vms ON vms.snack_id = s.snack_id
+JOIN vending_machine v ON v.machine_id = vms.machine_id
+JOIN location l ON l.location_id = v.location_id
+WHERE s.name LIKE '%peanut%butter%'
+LIMIT 1;
