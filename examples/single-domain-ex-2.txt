@@ -8,8 +8,8 @@ SELECT
     v.machine_id,
     vms.slot_code
 FROM snack s
+LEFT JOIN nutrition n ON s.snack_id = n.snack_id
 JOIN vending_machine_snack vms ON vms.snack_id = s.snack_id
 JOIN vending_machine v ON v.machine_id = vms.machine_id
 JOIN location l ON l.location_id = v.location_id
-WHERE s.name LIKE '%peanut%butter%'
-LIMIT 1;
+WHERE s.name LIKE '%peanut butter%' OR n.ingredients LIKE '%peanut butter%';

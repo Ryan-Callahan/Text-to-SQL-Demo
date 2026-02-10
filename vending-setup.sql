@@ -52,6 +52,7 @@ CREATE TABLE nutrition (
     added_sugars SMALLINT,
     protein SMALLINT NOT NULL,
     additional_info VARCHAR(300),
+    ingredients VARCHAR(300),
     FOREIGN KEY (snack_id) REFERENCES snack (snack_id)
         ON DELETE CASCADE
         ON UPDATE CASCADE
