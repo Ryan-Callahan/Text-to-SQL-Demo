@@ -1,8 +1,7 @@
+import datetime
 import sqlite3
 import os
 import json
-from unittest import case
-
 from openai import OpenAI
 
 fdir = os.path.dirname(__file__)
@@ -81,13 +80,29 @@ know anything about SQL would understand. Give your response in plain text. Don'
 currentMode = "zero-shot"
 currentModel = "gpt-5.2"
 
+def generateReport(question, sql, result, response):
+    filepath = getPath("reports")+"/"+datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S.txt")
+    with open(filepath, "w") as reportFile:
+        reportFile.write("Strategy: " + currentMode + "\n")
+        reportFile.write("Model: " + currentModel)
+        reportFile.write("\n\n")
+        reportFile.write("Question: " + question)
+        reportFile.write("\n\n")
+        reportFile.write("ChatGPT Generated SQL Query: " + sql)
+        reportFile.write("\n\n")
+        reportFile.write("Query Result: " + result)
+        reportFile.write("\n\n")
+        reportFile.write("ChatGPT Generated Response: " + response)
+
 def askChat(question):
     chatSQLquery = chat.responses.create(model=currentModel, input=strategies[currentMode] + question).output_text
     if chatSQLquery == "INVALID":
         return chat.responses.create(model=currentModel, input=strategies[currentMode] + question + errorInstructions).output_text
     else:
         res = cursor.execute(chatSQLquery).fetchall()
-        return chat.responses.create(model=currentModel, input=question + chatSQLquery + res.__str__() + responseInstructions).output_text
+        answer = chat.responses.create(model=currentModel, input=question + chatSQLquery + res.__str__() + responseInstructions).output_text
+        generateReport(question, chatSQLquery, res.__str__(), answer)
+        return answer
 
 optionSelect = ""
 while optionSelect != "quit":
@@ -128,24 +143,3 @@ while optionSelect != "quit":
                 print("Invalid model.")
         case _:
             print("Invalid input. Please try again.")
-
-# simpleQuestion = "Where can I find an apple?"
-# complexQuestion = "Where can I find the best snack for a type 1 diabetic experiencing a low?"
-#
-# print("EXAMPLE 0 ZERO SHOT SIMPLE QUESTION:")
-# print(chat.responses.create(model="gpt-5.2", input=strategies["zero-shot"] + simpleQuestion).output_text)
-#
-# print("EXAMPLE 1 ZERO SHOT COMPLEX QUESTION:")
-# print(chat.responses.create(model="gpt-5.2", input=strategies["zero-shot"] + complexQuestion).output_text)
-#
-# print("EXAMPLE 2 SINGLE DOMAIN SIMPLE QUESTION:")
-# print(chat.responses.create(model="gpt-5.2", input=strategies["single-domain"] + simpleQuestion).output_text)
-#
-# print("EXAMPLE 3 SINGLE DOMAIN COMPLEX QUESTION:")
-# print(chat.responses.create(model="gpt-5.2", input=strategies["single-domain"] + complexQuestion).output_text)
-#
-# print("EXAMPLE 4 CROSS DOMAIN SIMPLE QUESTION:")
-# print(chat.responses.create(model="gpt-5.2", input=strategies["cross-domain"] + simpleQuestion).output_text)
-#
-# print("EXAMPLE 5 CROSS DOMAIN COMPLEX QUESTION:")
-# print(chat.responses.create(model="gpt-5.2", input=strategies["cross-domain"] + complexQuestion).output_text)
